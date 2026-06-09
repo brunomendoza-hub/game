@@ -55,7 +55,63 @@ button:hover{
     margin-top:20px;
     font-size:18px;
 }
-</style>
+body{
+    font-family: Arial;
+    margin:0;
+    background: linear-gradient(180deg, #020617, #0f172a);
+    color:white;
+    text-align:center;
+}
+
+header{
+    padding:20px;
+    font-size:26px;
+    border-bottom:3px solid #22c55e;
+}
+
+/* CENTRALIZA */
+.container{
+    margin-top:40px;
+}
+
+/* BOTÕES COLORIDOS */
+button{
+    padding:15px 25px;
+    margin:10px;
+    font-size:18px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    color:white;
+    font-weight:bold;
+    transition:0.25s;
+}
+
+/* CORES */
+button:nth-child(1){ background:#3b82f6; }   /* pedra azul */
+button:nth-child(2){ background:#22c55e; }   /* papel verde */
+button:nth-child(3){ background:#ef4444; }   /* tesoura vermelho */
+
+button:hover{
+    transform: scale(1.1);
+    filter: brightness(1.2);
+}
+
+/* RESULTADO DESTACADO */
+.resultado{
+    margin-top:25px;
+    font-size:22px;
+    background:#1e293b;
+    padding:15px;
+    border-radius:12px;
+    display:inline-block;
+}
+
+/* PLACAR */
+.placar{
+    margin-top:20px;
+    font-size:20px;
+}
 
 </head>
 
