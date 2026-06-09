@@ -1,1 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Pedra Papel Tesoura</title>
 
+<style>
+body{
+    font-family: Arial;
+    margin:0;
+    background: radial-gradient(circle at top, #1e293b, #020617);
+    color:white;
+    text-align:center;
+}
+
+/* TÍTULO */
+header{
+    padding:20px;
+    font-size:24px;
+    border-bottom:2px solid #22c55e;
+}
+
+/* AREA */
+.container{
+    margin-top:30px;
+}
+
+/* BOTÕES */
+button{
+    padding:12px 20px;
+    margin:10px;
+    font-size:18px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#1e293b;
+    color:white;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#22c55e;
+    color:#022;
+    transform: scale(1.1);
+}
+
+/* RESULTADO */
+.resultado{
+    margin-top:25px;
+    font-size:20px;
+}
+
+/* PLACAR */
+.placar{
+    margin-top:20px;
+    font-size:18px;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>🎮 Pedra, Papel e Tesoura</header>
+
+<div class="container">
+
+    <p>Escolha sua jogada:</p>
+
+    <button onclick="jogar('pedra')">🪨 Pedra</button>
+    <button onclick="jogar('papel')">📄 Papel</button>
+    <button onclick="jogar('tesoura')">✂️ Tesoura</button>
+
+    <div class="resultado" id="resultado"></div>
+
+    <div class="placar">
+        Você: <span id="player">0</span> |
+        PC: <span id="pc">0</span>
+    </div>
+
+</div>
+
+<script>
+
+let pontosPlayer = 0;
+let pontosPC = 0;
+
+function jogar(jogador){
+
+    let opcoes = ["pedra", "papel", "tesoura"];
+    let computador = opcoes[Math.floor(Math.random()*3)];
+
+    let resultado = "";
+
+    if(jogador === computador){
+        resultado = "Empate 🤝";
+    }
+    else if(
+        (jogador==="pedra" && computador==="tesoura") ||
+        (jogador==="papel" && computador==="pedra") ||
+        (jogador==="tesoura" && computador==="papel")
+    ){
+        resultado = "Você ganhou 😎";
+        pontosPlayer++;
+    }
+    else{
+        resultado = "Computador ganhou 🤖";
+        pontosPC++;
+    }
+
+    document.getElementById("resultado").innerHTML =
+        `Você: ${jogador} | PC: ${computador} <br> <b>${resultado}</b>`;
+
+    document.getElementById("player").innerText = pontosPlayer;
+    document.getElementById("pc").innerText = pontosPC;
+}
+
+</script>
+
+</body>
+</html>
