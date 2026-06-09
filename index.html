@@ -2,59 +2,10 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Pedra Papel Tesoura</title>
+<title>⚡ Reflexo</title>
 
 <style>
-body{
-    font-family: Arial;
-    margin:0;
-    background: radial-gradient(circle at top, #1e293b, #020617);
-    color:white;
-    text-align:center;
-}
 
-/* TÍTULO */
-header{
-    padding:20px;
-    font-size:24px;
-    border-bottom:2px solid #22c55e;
-}
-
-/* AREA */
-.container{
-    margin-top:30px;
-}
-
-/* BOTÕES */
-button{
-    padding:12px 20px;
-    margin:10px;
-    font-size:18px;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-    background:#1e293b;
-    color:white;
-    transition:0.3s;
-}
-
-button:hover{
-    background:#22c55e;
-    color:#022;
-    transform: scale(1.1);
-}
-
-/* RESULTADO */
-.resultado{
-    margin-top:25px;
-    font-size:20px;
-}
-
-/* PLACAR */
-.placar{
-    margin-top:20px;
-    font-size:18px;
-}
 body{
     font-family: Arial;
     margin:0;
@@ -63,112 +14,181 @@ body{
     text-align:center;
 }
 
+/* HEADER */
 header{
     padding:20px;
-    font-size:26px;
-    border-bottom:3px solid #22c55e;
+    font-size:28px;
+    font-weight:bold;
 }
 
-/* CENTRALIZA */
+/* CENTRO */
 .container{
-    margin-top:40px;
+    margin-top:60px;
 }
 
-/* BOTÕES COLORIDOS */
-button{
-    padding:15px 25px;
-    margin:10px;
-    font-size:18px;
+/* BOTÃO PRINCIPAL */
+#botao{
+    width:180px;
+    height:180px;
+    font-size:26px;
+    border:none;
+    border-radius:50%;
+    background:#ef4444;
+    color:white;
+    display:none;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+#botao:hover{
+    transform: scale(1.1);
+}
+
+/* BOTÃO INICIAR */
+#start{
+    padding:18px 30px;
+    font-size:22px;
     border:none;
     border-radius:12px;
+    background:#22c55e;
+    color:#022;
     cursor:pointer;
-    color:white;
     font-weight:bold;
-    transition:0.25s;
 }
 
-/* CORES */
-button:nth-child(1){ background:#3b82f6; }   /* pedra azul */
-button:nth-child(2){ background:#22c55e; }   /* papel verde */
-button:nth-child(3){ background:#ef4444; }   /* tesoura vermelho */
-
-button:hover{
-    transform: scale(1.1);
-    filter: brightness(1.2);
-}
-
-/* RESULTADO DESTACADO */
-.resultado{
-    margin-top:25px;
-    font-size:22px;
-    background:#1e293b;
-    padding:15px;
-    border-radius:12px;
-    display:inline-block;
+/* STATUS GRANDE */
+#status{
+    margin-top:30px;
+    font-size:26px;
+    font-weight:bold;
 }
 
 /* PLACAR */
-.placar{
-    margin-top:20px;
-    font-size:20px;
+#placar{
+    margin-top:25px;
+    font-size:22px;
 }
+
+/* ANIMAÇÃO */
+.pulso{
+    animation: pulso 0.5s;
+}
+
+@keyframes pulso{
+    0%{ transform: scale(1); }
+    50%{ transform: scale(1.3); }
+    100%{ transform: scale(1); }
+}
+
+</style>
 
 </head>
 
 <body>
 
-<header>🎮 Pedra, Papel e Tesoura</header>
+<header>⚡ Teste de Reflexo</header>
 
 <div class="container">
 
-    <p>Escolha sua jogada:</p>
+    <button id="start" onclick="iniciar()">COMEÇAR</button>
 
-    <button onclick="jogar('pedra')">🪨 Pedra</button>
-    <button onclick="jogar('papel')">📄 Papel</button>
-    <button onclick="jogar('tesoura')">✂️ Tesoura</button>
+    <br><br>
 
-    <div class="resultado" id="resultado"></div>
+    <button id="botao" onclick="clicou()">CLIQUE!</button>
 
-    <div class="placar">
-        Você: <span id="player">0</span> |
-        PC: <span id="pc">0</span>
-    </div>
+    <div id="status">Aguardando...</div>
+
+    <div id="placar">Pontos: 0</div>
 
 </div>
 
 <script>
 
-let pontosPlayer = 0;
-let pontosPC = 0;
+let pontos = 0;
+let tempo;
+let ativo = false;
 
-function jogar(jogador){
+// iniciar
+function iniciar(){
+    pontos = 0;
+    atualizar();
 
-    let opcoes = ["pedra", "papel", "tesoura"];
-    let computador = opcoes[Math.floor(Math.random()*3)];
+    document.getElementById("status").innerText = "Prepare-se...";
+    proximaRodada();
+}
 
-    let resultado = "";
+// rodada
+function proximaRodada(){
 
-    if(jogador === computador){
-        resultado = "Empate 🤝";
+    ativo = false;
+
+    document.getElementById("botao").style.display = "none";
+
+    let delay = Math.random() * 2500 + 1000;
+
+    setTimeout(()=>{
+        mostrarBotao();
+    }, delay);
+}
+
+// mostrar botão
+function mostrarBotao(){
+
+    let btn = document.getElementById("botao");
+
+    btn.style.background = "#22c55e"; // verde = pode clicar
+    btn.innerText = "AGORA!";
+
+    btn.style.display = "inline-block";
+
+    tempo = Date.now();
+    ativo = true;
+
+    document.getElementById("status").innerText = "CLIQUE RÁPIDO!";
+}
+
+// clique
+function clicou(){
+
+    let btn = document.getElementById("botao");
+
+    if(!ativo){
+
+        btn.style.background = "#ef4444";
+        btn.innerText = "ERRO!";
+        document.getElementById("status").innerText = "Muito cedo 😡";
+        pontos = 0;
+        atualizar();
+
+        return;
     }
-    else if(
-        (jogador==="pedra" && computador==="tesoura") ||
-        (jogador==="papel" && computador==="pedra") ||
-        (jogador==="tesoura" && computador==="papel")
-    ){
-        resultado = "Você ganhou 😎";
-        pontosPlayer++;
+
+    let tempoClique = Date.now() - tempo;
+
+    btn.classList.add("pulso");
+
+    if(tempoClique < 400){
+        pontos++;
+        document.getElementById("status").innerText = "🔥 PERFEITO!";
+    }
+    else if(tempoClique < 700){
+        document.getElementById("status").innerText = "👍 BOM!";
     }
     else{
-        resultado = "Computador ganhou 🤖";
-        pontosPC++;
+        document.getElementById("status").innerText = "🐢 LENTO!";
     }
 
-    document.getElementById("resultado").innerHTML =
-        `Você: ${jogador} | PC: ${computador} <br> <b>${resultado}</b>`;
+    atualizar();
 
-    document.getElementById("player").innerText = pontosPlayer;
-    document.getElementById("pc").innerText = pontosPC;
+    setTimeout(()=>{
+        btn.classList.remove("pulso");
+        proximaRodada();
+    },500);
+}
+
+// atualizar pontos
+function atualizar(){
+    document.getElementById("placar").innerText = "Pontos: " + pontos;
 }
 
 </script>
