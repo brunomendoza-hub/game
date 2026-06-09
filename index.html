@@ -2,105 +2,100 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>⚡ Reflexo</title>
+<title>⚡ Reflexo PRO</title>
 
 <style>
 
 body{
     font-family: Arial;
     margin:0;
-    background: linear-gradient(180deg, #020617, #0f172a);
+    background: radial-gradient(circle, #1e3a8a, #020617);
     color:white;
-    text-align:center;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
 }
 
-/* HEADER */
+/* TITULO */
 header{
-    padding:20px;
-    font-size:28px;
-    font-weight:bold;
+    position:absolute;
+    top:20px;
+    font-size:24px;
+    letter-spacing:1px;
 }
 
-/* CENTRO */
-.container{
-    margin-top:60px;
-}
-
-/* BOTÃO PRINCIPAL */
+/* BOTÃO GRANDE */
 #botao{
-    width:180px;
-    height:180px;
-    font-size:26px;
-    border:none;
+    width:220px;
+    height:220px;
     border-radius:50%;
-    background:#ef4444;
+    border:none;
+    font-size:26px;
     color:white;
-    display:none;
+    background:#ef4444; /* vermelho */
+    display:flex;
+    align-items:center;
+    justify-content:center;
     cursor:pointer;
     transition:0.2s;
 }
 
-#botao:hover{
-    transform: scale(1.1);
+/* ANIMAÇÃO PULSO */
+.pulso{
+    animation: pulso 0.6s infinite;
 }
 
-/* BOTÃO INICIAR */
-#start{
-    padding:18px 30px;
-    font-size:22px;
-    border:none;
-    border-radius:12px;
-    background:#22c55e;
-    color:#022;
-    cursor:pointer;
-    font-weight:bold;
+@keyframes pulso{
+    0%{transform:scale(1);}
+    50%{transform:scale(1.2);}
+    100%{transform:scale(1);}
 }
 
-/* STATUS GRANDE */
+/* TEXTO */
 #status{
-    margin-top:30px;
+    margin-top:25px;
     font-size:26px;
     font-weight:bold;
 }
 
 /* PLACAR */
 #placar{
-    margin-top:25px;
+    margin-top:10px;
     font-size:22px;
 }
 
-/* ANIMAÇÃO */
-.pulso{
-    animation: pulso 0.5s;
+/* BOTÃO START */
+#start{
+    margin-top:30px;
+    padding:15px 30px;
+    border:none;
+    border-radius:12px;
+    font-size:20px;
+    background:#22c55e;
+    color:#022;
+    cursor:pointer;
+    transition:0.2s;
 }
 
-@keyframes pulso{
-    0%{ transform: scale(1); }
-    50%{ transform: scale(1.3); }
-    100%{ transform: scale(1); }
+#start:hover{
+    transform:scale(1.1);
 }
 
 </style>
-
 </head>
 
 <body>
 
 <header>⚡ Teste de Reflexo</header>
 
-<div class="container">
+<button id="botao" class="pulso" onclick="clicou()">ESPERA...</button>
 
-    <button id="start" onclick="iniciar()">COMEÇAR</button>
+<div id="status">Clique em COMEÇAR</div>
+<div id="placar">Pontos: 0</div>
 
-    <br><br>
-
-    <button id="botao" onclick="clicou()">CLIQUE!</button>
-
-    <div id="status">Aguardando...</div>
-
-    <div id="placar">Pontos: 0</div>
-
-</div>
+<button id="start" onclick="iniciar()">COMEÇAR</button>
 
 <script>
 
@@ -108,7 +103,6 @@ let pontos = 0;
 let tempo;
 let ativo = false;
 
-// iniciar
 function iniciar(){
     pontos = 0;
     atualizar();
@@ -117,76 +111,73 @@ function iniciar(){
     proximaRodada();
 }
 
-// rodada
 function proximaRodada(){
 
     ativo = false;
 
-    document.getElementById("botao").style.display = "none";
+    let btn = document.getElementById("botao");
+    btn.style.background = "#ef4444";
+    btn.innerText = "ESPERA...";
+    btn.classList.add("pulso");
 
-    let delay = Math.random() * 2500 + 1000;
+    let delay = Math.random()*2000+1000;
 
     setTimeout(()=>{
-        mostrarBotao();
+        mostrar();
     }, delay);
 }
 
-// mostrar botão
-function mostrarBotao(){
-
+function mostrar(){
     let btn = document.getElementById("botao");
 
-    btn.style.background = "#22c55e"; // verde = pode clicar
+    btn.style.background = "#22c55e"; // verde
     btn.innerText = "AGORA!";
-
-    btn.style.display = "inline-block";
+    btn.classList.remove("pulso");
 
     tempo = Date.now();
     ativo = true;
 
-    document.getElementById("status").innerText = "CLIQUE RÁPIDO!";
+    document.getElementById("status").innerText = "CLICA!";
 }
 
-// clique
 function clicou(){
 
     let btn = document.getElementById("botao");
 
     if(!ativo){
 
-        btn.style.background = "#ef4444";
-        btn.innerText = "ERRO!";
-        document.getElementById("status").innerText = "Muito cedo 😡";
+        btn.style.background = "#f59e0b"; // amarelo erro
+        btn.innerText = "ERRADO!";
+        document.getElementById("status").innerText = "Cedo demais 😡";
+
         pontos = 0;
         atualizar();
-
         return;
     }
 
     let tempoClique = Date.now() - tempo;
 
-    btn.classList.add("pulso");
-
-    if(tempoClique < 400){
+    if(tempoClique < 350){
         pontos++;
         document.getElementById("status").innerText = "🔥 PERFEITO!";
+        btn.style.background = "#22c55e";
     }
     else if(tempoClique < 700){
         document.getElementById("status").innerText = "👍 BOM!";
+        btn.style.background = "#3b82f6";
     }
     else{
         document.getElementById("status").innerText = "🐢 LENTO!";
+        btn.style.background = "#ef4444";
     }
 
     atualizar();
 
     setTimeout(()=>{
-        btn.classList.remove("pulso");
         proximaRodada();
-    },500);
+    },700);
 }
 
-// atualizar pontos
 function atualizar(){
     document.getElementById("placar").innerText = "Pontos: " + pontos;
 }
@@ -195,3 +186,4 @@ function atualizar(){
 
 </body>
 </html>
+``
